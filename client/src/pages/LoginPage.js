@@ -8,25 +8,21 @@ function LoginPage() {
   const [password, setpassword] = useState('');
   const navigate = useNavigate();
 
-
-  const  handleSubmit = (e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();   
-    axios.post('http://localhost:3001/login',{enrollmentNo,password})
-  .then(result=>{
-    console.log(result)
+    axios.post('http://localhost:3001/login', {enrollmentNo, password})
+      .then(result => {
+        console.log(result)
 
         if (result.data === "Login successfull") {
           navigate("/main");
         }
-
         else if (result.data === "The password is incorrect") {
           alert('The password is incorrect');
         }
-
         else
           alert('Wrong credentials');
       })
-
       .catch(err => console.log(err))
   }
 
@@ -38,102 +34,132 @@ function LoginPage() {
   const userType = ['Student', 'Parent']
 
   return (
-    <>
-      <nav className="bg-orange-400 text-center h-1/5">
-        <div className="inline-block">
-          <p className="text-5xl font-semibold mb-1">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Header */}
+      <nav className="bg-orange-400 text-center py-6 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-2 text-white">
             Thapar University, Patiala
-          </p>
-          <p className="font-medium mb-1">
+          </h1>
+          <p className="text-sm md:text-base font-medium mb-1 text-orange-100">
             (Formerly known as Thapar Institute of Engineering and Technology)
           </p>
-          <p className="text-white font-semibold mb-1">
+          <p className="text-white font-semibold text-sm md:text-base">
             WEB KIOSK(INTERNET) for Parent/Students
           </p>
         </div>
       </nav>
-      <div className="MainArea bg-yellow-300 flex py-5 justify-center px-5 h-3/5">
-        <img
-          className="h-2/5 w-2/5 rounded-3xl mx-5"
-          src="https://images.shiksha.com/mediadata/images/1584960645php8nt1Zj.jpeg"
-          alt=""
-        />
-        <div
-          className="Authentication mx-7 flex flex-col"
-          style={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <div className="border-2 border-orange-400 p-4 rounded-lg">
-            <p className="bg-orange-400 text-white text-center rounded-md font-semibold">
-              Kiosk Authentication Screen
-            </p>
-            <form onSubmit={handleSubmit} >
-              <div className="py-0.5 inline-block">
-                <label htmlFor="Member Type">Member Type:&nbsp; </label>
-                <select
-                  name="member"
-                  id="member"
-                  className="border-solid border-neutral-500 border-2 rounded-sm w-auto"
-                >
-                  {
-                    userType.map((type) => {
-                      return (<option key={type}>{type}</option>)
-                    })
-                  }
-                </select>
+      
+      {/* Main Content */}
+      <div className="flex-1 bg-gradient-to-br from-yellow-200 to-yellow-300 flex items-center justify-center p-4">
+        <div className="w-full max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+            
+            {/* University Image */}
+            <div className="flex-shrink-0 order-2 lg:order-1">
+              <img
+                className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-2xl shadow-xl object-cover border-4 border-white"
+                src="https://images.shiksha.com/mediadata/images/1584960645php8nt1Zj.jpeg"
+                alt="Thapar University Campus"
+              />
+            </div>
+            
+            {/* Authentication Form */}
+            <div className="flex-shrink-0 order-1 lg:order-2 w-full max-w-md">
+              <div className="bg-white border-2 border-orange-400 p-6 md:p-8 rounded-xl shadow-2xl">
+                <div className="bg-orange-400 text-white text-center rounded-lg font-semibold py-3 mb-6">
+                  <h2 className="text-lg md:text-xl">Kiosk Authentication Screen</h2>
+                </div>
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Member Type */}
+                  <div className="space-y-2">
+                    <label htmlFor="member" className="block text-sm font-semibold text-gray-700">
+                      Member Type
+                    </label>
+                    <select
+                      name="member"
+                      id="member"
+                      className="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-orange-400 focus:outline-none transition-colors"
+                    >
+                      {userType.map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  {/* Enrollment Number */}
+                  <div className="space-y-2">
+                    <label htmlFor="enrollmentNo" className="block text-sm font-semibold text-gray-700">
+                      Enrollment Number
+                    </label>
+                    <input
+                      type="text"
+                      id="enrollmentNo"
+                      name="enrollmentNo"
+                      value={enrollmentNo}
+                      placeholder="Enter your enrollment number"
+                      className="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-orange-400 focus:outline-none transition-colors"
+                      onChange={(e) => setenrollmentNo(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  {/* Password */}
+                  <div className="space-y-2">
+                    <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+                      Password/PIN
+                    </label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={password}
+                      placeholder="Enter your password"
+                      className="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-orange-400 focus:outline-none transition-colors"
+                      onChange={(e) => setpassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  {/* Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg border-2 border-orange-500 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    >
+                      Submit
+                    </button>
+                    <button 
+                      onClick={handleReset}
+                      type="button"
+                      className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg border-2 border-gray-500 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </form>
               </div>
-              <br />
-              <div className="py-0.5 inline-block">
-                <label htmlFor="enrollmentNo">Enrollment No: </label>
-                <input
-                  type="text"
-                  id="enrollmentNo"
-                  name="enrollmentNo"
-                  className="border-solid border-neutral-500 border-2 rounded-sm px-1"
-                  onChange={(e) => setenrollmentNo(e.target.value)}
-                />
-              </div>
-              <br />
-              <div className="py-0.5 inline-block">
-                <label htmlFor="password">Password/Pin: &nbsp; </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="border-solid border-neutral-500 border-2 rounded-sm px-1"
-                  onChange={(e) => setpassword(e.target.value)}
-                />
-              </div>
-              <br />
-              <div className="py-0.5 inline-block w-full">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-orange-400 font-bold py-2 px-4 rounded-lg w-1/2 border border-orange-400 active:bg-red-500"
-                >
-                  Submit
-                </button>
-                <button onClick={handleReset}
-                  type="reset"
-                  className="bg-blue-500 text-orange-400 font-bold py-2 px-4 rounded-lg w-1/2 border border-orange-400 active:bg-red-500"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
-      <footer className="Disclaimer bg-orange-400 h-1/5">
-        <div className="p-3">
-          Disclaimer:Thapar Institute of Engineering and Technology is not
-          responsible for any inadvertent error that may have crept in the results
-          being published on WEB KIOSK. The results published on net are for
-          immediate information to the examinees. These cannot be treated as final
-          result. Original Grade Cards have been issued by the Institute
-          separately under the signature of Registrar and are authentic proof of
-          academic performance.
+      
+      {/* Footer */}
+      <footer className="bg-orange-400 text-white p-4 md:p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-xs md:text-sm leading-relaxed">
+            <strong className="text-orange-100">Disclaimer:</strong> Thapar Institute of Engineering and Technology is not
+            responsible for any inadvertent error that may have crept in the results
+            being published on WEB KIOSK. The results published on net are for
+            immediate information to the examinees. These cannot be treated as final
+            result. Original Grade Cards have been issued by the Institute
+            separately under the signature of Registrar and are authentic proof of
+            academic performance.
+          </div>
         </div>
       </footer> 
-    </>
+    </div>
   );
 }
 
